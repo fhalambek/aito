@@ -1,13 +1,15 @@
 #include <stdlib.h>
 
+/*
 const int trigPin[0] = 3;
 const int echoPin[0] = 2;
 const int trigPin[1] = 4;
 const int echoPin[1] = 5;
+*/
 const int foward_l = 10;
 const int foward_r = 9;
-const int back_l = 8;
-const int back_r = 7;
+const int back_l = 12;
+const int back_r = 11;
 
 
 
@@ -21,42 +23,65 @@ void setup() {
   
   pinMode(13, OUTPUT);    //onboard led
   
-  pinMode(12, OUTPUT);    //GND
-  pinMode(11, OUTPUT);    //5V
-  pinMode(4, OUTPUT);     //5V
-  digitalWrite(12, LOW);
-  digitalWrite(4, HIGH);
-  digitalWrite(11, HIGH);
-  
 }
 
 void loop() {
+  digitalWrite(10, HIGH);
   
-  
+  //digitalWrite(9, HIGH);
+  /*
+  for(int i = -100; i <= 100; i++){
+    drive(i);
+    delay(50);
+  }
+  for(int i = 100; i >= -100; i--){
+    drive(i);
+    delay(50);
+  }
+  */
 }
 
 
 void leftMotor(int percent){
   int power = (percent * 255)/100;
   if(power >= 0){
+  if(digitalRead(back_l == HIGH)){
+      digitalWrite(back_l, LOW);
+      delay(150);
+    }
     analogWrite(foward_l, power);
   }
   else{
-    digitalWrite(back_l, HIGH)
-    analogWrite(255+power);
+    digitalWrite(back_l, HIGH);
+    analogWrite(foward_l, 255+power);
+  }
+}
+void rightMotor(int percent){
+  int power = (percent * 255)/100;
+  if(power >= 0){
+    if(digitalRead(back_r == HIGH)){
+      digitalWrite(back_r, LOW);
+      delay(150);
+    }
+    analogWrite(foward_r, power);
+  }
+  else{
+    digitalWrite(back_r, HIGH);
+    analogWrite(foward_r, 255+power);
   }
 }
 
-
+void drive(int power){
+  rightMotor(power);
+  leftMotor(power);
+}
 void brake(){
-  digitalWrite(foward_l, LOW);
-  digitalWrite(back_l, LOW);
-  digitalWrite(foward_r, LOW);
-  digitalWrite(back_r, LOW);
+  leftMotor(0);
+  rightMotor(0);
   delay(150);
 }
-
-int dist(side){
+/*
+int dist(int side){
   int duration, cm;
   
   pinMode(trigPin[side], OUTPUT);
@@ -72,7 +97,7 @@ int dist(side){
   cm = microsecondsToCentimeters(duration);
   return cm;
 }
-
+*/
 long microsecondsToCentimeters(long microseconds) {
   if(microseconds == 0) return 1000;
   return microseconds / 29 / 2;
