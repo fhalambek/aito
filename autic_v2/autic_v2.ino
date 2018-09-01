@@ -27,7 +27,7 @@ void setup() {
   pinMode(redL, OUTPUT);
   pinMode(greenL, OUTPUT);
   
-  
+  Serial.begin(115200);
   //pinMode(6, INPUT);     //ir
   
   pinMode(13, OUTPUT);    //onboard led
@@ -38,13 +38,19 @@ void loop() {
   //drive(100);
 
   lights();
-  
-  if(distR() < 30 or distL() < 30){
+  int dR = distR();
+  delay(100);
+  int dL = distL();
+  Serial.print(dR);
+  Serial.print(", ");
+  Serial.print(dL);
+  Serial.println();
+  if(dR < 30 or dL < 30){
     int s = rand();
     brake();
     
     drive(-100);
-    delay(700);
+    delay(550);
     lights();
     if (s % 2 == 0) {
       leftMotor(100);
@@ -61,15 +67,27 @@ void loop() {
     brake();
   }
   if(distR() < 60 and distL() < 60){
+    //int s = rand();
     drive(75);
+    /*
+     if (s % 2 == 0) {
+      leftMotor(100);
+      rightMotor(0);
+    }
+    else {
+      leftMotor(0);
+      rightMotor(100);
+    }
+    delay(400);
+    */
   }
   else if(distR() < 60){
     leftMotor(100);
-    rightMotor(0);
+    rightMotor(-10);
     delay(400);
   }
   else if(distL() < 60){
-    leftMotor(0);
+    leftMotor(-10);
     rightMotor(100);
     delay(400);
   }
@@ -164,7 +182,7 @@ void drive(int power){
 void brake(){
   leftMotor(0);
   rightMotor(0);
-  delay(150);
+  delay(250);
 }
 
 
