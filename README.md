@@ -1,2 +1,2 @@
 # aito
-AI za auto na daljinski
+AI za samovozeci autic
